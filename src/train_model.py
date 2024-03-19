@@ -7,8 +7,7 @@ from tqdm import tqdm
 
 from data_preparation import get_data
 from models import CustomCNN
-from train_eval_utils import (evaluate_model, load_config, plot_loss_and_acc,
-                              train_epoch)
+from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
 MODELS = {"CustomCNN": CustomCNN()}
 

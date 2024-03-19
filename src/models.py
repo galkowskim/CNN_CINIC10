@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torchvision
+
 # OUR MODELS
 
 
@@ -36,13 +37,16 @@ class CustomCNN(nn.Module):
 
 # MODELS BASED ON PRETRAINED MODELS
 
+
 class PretrainedResNet(nn.Module):
     def __init__(self):
         super().__init__()
         # Load pre-trained ResNet model and freeze its weights
         resnet = torchvision.models.resnet18(pretrained=True)
         for name, param in resnet.named_parameters():
-            if "fc" not in name:  # Unfreeze all layers except the last layer (fully connected layer)
+            if (
+                "fc" not in name
+            ):  # Unfreeze all layers except the last layer (fully connected layer)
                 param.requires_grad = False
 
         # Modify the last layer for CIFAR-10 (10 classes)

@@ -100,9 +100,13 @@ def main(args):
     plot_loss_and_acc(df, f"{path}/{model_name}_{seed}.png")
     df.to_csv(f"{path}/{model_name}_{seed}.csv")
 
-    test_loss, test_accuracy = evaluate_model(device, model, criterion, cinic_test)
-    print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
+    best_model = MODELS[config["model"]["model_name"]]
+    checkpoint = torch.load(
+        f"{path}/{checkpoint_name}"
+    )
+    best_model.load_state_dict(checkpoint["model_state_dict"])
 
+    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test)
     with open(f"{path}/test_results.txt", "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
 

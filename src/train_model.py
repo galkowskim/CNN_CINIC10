@@ -6,10 +6,10 @@ import torch
 from tqdm import tqdm
 
 from data_preparation import get_data
-from models import CustomCNN
+from models import CustomCNN, PretrainedResNet
 from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
-MODELS = {"CustomCNN": CustomCNN()}
+MODELS = {"CustomCNN": CustomCNN(), "PretrainedResNet": PretrainedResNet()}
 
 OPTIMIZERS = {
     "adam": torch.optim.Adam,

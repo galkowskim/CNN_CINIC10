@@ -1,0 +1,21 @@
+{
+    "model": {
+        "seed": 42,
+        "model_name": "CustomCNN"
+    },
+    "training_params": {
+        "optimizer": "adam",
+        "lr": 0.001,
+        "no_epochs": 2,
+        "batch_size": 256,
+        "lr_scheduler": "StepLR"
+    },
+    "lr_scheduler_params": {
+        "step_size": 7,
+        "gamma": 0.5
+    },
+    "early_stopping_params": {
+        "patience": 5,
+        "min_delta": 0.001
+    }
+}

@@ -113,7 +113,7 @@ class VGG16BasedModelFor32x32Images(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
-        self.fc = nn.Sequential(nn.Dropout(0.5), nn.Linear(512, 512), nn.ReLU())
+        self.fc = nn.Sequential(nn.Dropout(0.5), nn.Linear(512 * 4, 512), nn.ReLU())
         self.fc1 = nn.Sequential(nn.Dropout(0.5), nn.Linear(512, 512), nn.ReLU())
         self.fc2 = nn.Sequential(nn.Linear(512, 10))
 

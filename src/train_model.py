@@ -1,3 +1,4 @@
+import json
 import os
 from argparse import ArgumentParser
 
@@ -67,6 +68,9 @@ def main(args):
 
     path = f"{args.checkpoints}/{model_name}_{seed}"
     os.makedirs(path, exist_ok=True)
+
+    with open(f"{path}/config.json", "w") as f:
+        json.dump(config, f)
 
     columns = ["Train Loss", "Train Accuracy", "Val Loss", "Val Accuracy"]
     df = pd.DataFrame(columns=columns)

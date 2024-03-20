@@ -80,7 +80,7 @@ def main(args):
     model_name = config["model"]["model_name"]
     seed = config["model"]["seed"]
 
-    path = f"{args.checkpoints}/{model_name}_{seed}"
+    path = f"{args.checkpoints}/{model_name}_seed_{seed}_augmentation_{config['data_params']['augmentation']}"
     os.makedirs(path, exist_ok=True)
 
     with open(f"{path}/config.json", "w") as f:

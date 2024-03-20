@@ -6,12 +6,13 @@ import torch
 
 def train_epoch(device, model, criterion, optimizer, train_loader):
     model.train()
-    model.to(device)
     running_loss = 0.0
     running_accuracy = 0.0
 
     for inputs, labels in train_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
+        inputs, labels = inputs.to(device, non_blocking=True), labels.to(
+            device, non_blocking=True
+        )
         optimizer.zero_grad()
 
         outputs = model(inputs)
@@ -29,13 +30,14 @@ def train_epoch(device, model, criterion, optimizer, train_loader):
 
 def evaluate_model(device, model, criterion, test_loader):
     model.eval()
-    model.to(device)
     running_loss = 0.0
     running_accuracy = 0.0
 
     with torch.no_grad():
         for inputs, labels in test_loader:
-            inputs, labels = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device, non_blocking=True), labels.to(
+                device, non_blocking=True
+            )
             outputs = model(inputs)
             loss = criterion(outputs, labels)
 

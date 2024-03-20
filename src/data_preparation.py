@@ -45,21 +45,21 @@ def get_data(
         torchvision.datasets.ImageFolder(data_path + "/train", transform=transform),
         batch_size=batch_size,
         shuffle=True,
-        num_workers=2,
+        num_workers=4,
         pin_memory=True,
     )
     cinic_valid = torch.utils.data.DataLoader(
         torchvision.datasets.ImageFolder(data_path + "/valid", transform=transform),
         batch_size=batch_size,
         shuffle=False,
-        num_workers=2,
+        num_workers=4,
         pin_memory=True,
     )
     cinic_test = torch.utils.data.DataLoader(
         torchvision.datasets.ImageFolder(data_path + "/test", transform=transform),
         batch_size=batch_size,
         shuffle=False,
-        num_workers=2,
+        num_workers=4,
         pin_memory=True,
     )
 

@@ -8,12 +8,12 @@ from tqdm import tqdm
 
 from data_preparation import get_data
 from models import (
-    VGG16BasedModelFor32x32Images,
     CustomCNN,
     LeNet5BasedModelFor32x32Images,
     PretrainedResNet,
     ResidualBlock,
     ResNetBasedModelFor32x32Images,
+    VGG16BasedModelFor32x32Images,
 )
 from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
@@ -43,19 +43,22 @@ def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
+    config = load_config(args.config)
+
     cinic_directory = "."
 
     cinic_train, cinic_valid, cinic_test = get_data(
-        cinic_directory, batch_size=256, augmentation=False
+        cinic_directory,
+        batch_size=256,
+        augmentation=config["data_params"]["augmentation"],
     )
-
-    config = load_config(args.config)
 
     model = (
         MODELS[config["model"]["model_name"]]()
-        if "ResNetBasedModelFor32x32Images" == config["model"]["model_name"]
+        if "ResNetBasedModelFor32x32Images" != config["model"]["model_name"]
         else MODELS[config["model"]["model_name"]](ResidualBlock, [2, 2, 2, 2])
     )
+    model.to(device)
 
     if config["training_params"]["optimizer"] == "sgd":
         optimizer = OPTIMIZERS["sgd"](
@@ -118,11 +121,11 @@ def main(args):
                 os.path.join(path, checkpoint_name),
             )
             counter = 0
-        elif val_loss >= best_val_loss - min_delta:  # Early stopping
-            counter += 1
-            if counter >= patience:
-                print("Early stopping...")
-                break
+        # elif val_loss >= best_val_loss - min_delta:  # Early stopping
+        #     counter += 1
+        #     if counter >= patience:
+        #         print("Early stopping...")
+        #         break
 
         scheduler.step()
 
@@ -134,11 +137,17 @@ def main(args):
     plot_loss_and_acc(df, f"{path}/{model_name}_{seed}.png")
     df.to_csv(f"{path}/{model_name}_{seed}.csv")
 
-    best_model = MODELS[config["model"]["model_name"]]
+    best_model = (
+        MODELS[config["model"]["model_name"]]()
+        if "ResNetBasedModelFor32x32Images" != config["model"]["model_name"]
+        else MODELS[config["model"]["model_name"]](ResidualBlock, [2, 2, 2, 2])
+    )
     checkpoint = torch.load(f"{path}/{checkpoint_name}")
     best_model.load_state_dict(checkpoint["model_state_dict"])
+    best_model.to(device)
 
     test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test)
+    print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
     with open(f"{path}/test_results.txt", "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
 

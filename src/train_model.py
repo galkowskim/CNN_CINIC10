@@ -8,23 +8,23 @@ from tqdm import tqdm
 
 from data_preparation import get_data
 from models import (
-    VGG16,
-    AlexNet,
+    VGG16BasedModelFor32x32Images,
     CustomCNN,
-    LeNet5,
+    LeNet5BasedModelFor32x32Images,
     PretrainedResNet,
     ResidualBlock,
-    ResNet,
+    ResNetBasedModelFor32x32Images,
 )
 from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
 MODELS = {
+    # own implementation
     "CustomCNN": CustomCNN,
+    "LeNet5BasedModelFor32x32Images": LeNet5BasedModelFor32x32Images,
+    "VGG16BasedModelFor32x32Images": VGG16BasedModelFor32x32Images,
+    "ResNetBasedModelFor32x32Images": ResNetBasedModelFor32x32Images,
+    # pretrained models
     "PretrainedResNet": PretrainedResNet,
-    "LeNet5": LeNet5,
-    "AlexNet": AlexNet,
-    "VGG16": VGG16,
-    "ResNet": ResNet,
 }
 
 OPTIMIZERS = {
@@ -34,6 +34,7 @@ OPTIMIZERS = {
 
 SCHEDULERS = {
     "StepLR": torch.optim.lr_scheduler.StepLR,
+    "CosineAnnealingLR": torch.optim.lr_scheduler.CosineAnnealingLR,
 }
 
 
@@ -55,9 +56,19 @@ def main(args):
         if "ResNet" not in config["model"]["model_name"]
         else MODELS[config["model"]["model_name"]](ResidualBlock, [2, 2, 2, 2])
     )
-    optimizer = OPTIMIZERS[config["training_params"]["optimizer"]](
-        model.parameters(), lr=config["training_params"]["lr"]
-    )
+
+    if config["training_params"]["optimizer"] == "sgd":
+        optimizer = OPTIMIZERS["sgd"](
+            model.parameters(),
+            lr=config["training_params"]["lr"],
+            momentum=0.9,
+            weight_decay=1e-4,
+        )
+    else:
+        optimizer = OPTIMIZERS[config["training_params"]["optimizer"]](
+            model.parameters(), lr=config["training_params"]["lr"]
+        )
+
     criterion = torch.nn.CrossEntropyLoss()
     scheduler = SCHEDULERS[config["training_params"]["lr_scheduler"]](
         optimizer, **config["lr_scheduler_params"]

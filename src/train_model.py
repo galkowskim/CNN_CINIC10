@@ -53,7 +53,7 @@ def main(args):
 
     model = (
         MODELS[config["model"]["model_name"]]()
-        if "ResNet" not in config["model"]["model_name"]
+        if "ResNetBasedModelFor32x32Images" == config["model"]["model_name"]
         else MODELS[config["model"]["model_name"]](ResidualBlock, [2, 2, 2, 2])
     )
 

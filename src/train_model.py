@@ -6,10 +6,25 @@ import torch
 from tqdm import tqdm
 
 from data_preparation import get_data
-from models import CustomCNN, PretrainedResNet
+from models import (
+    VGG16,
+    AlexNet,
+    CustomCNN,
+    LeNet5,
+    PretrainedResNet,
+    ResidualBlock,
+    ResNet,
+)
 from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
-MODELS = {"CustomCNN": CustomCNN(), "PretrainedResNet": PretrainedResNet()}
+MODELS = {
+    "CustomCNN": CustomCNN,
+    "PretrainedResNet": PretrainedResNet,
+    "LeNet5": LeNet5,
+    "AlexNet": AlexNet,
+    "VGG16": VGG16,
+    "ResNet": ResNet,
+}
 
 OPTIMIZERS = {
     "adam": torch.optim.Adam,
@@ -34,7 +49,11 @@ def main(args):
 
     config = load_config(args.config)
 
-    model = MODELS[config["model"]["model_name"]]
+    model = (
+        MODELS[config["model"]["model_name"]]()
+        if "ResNet" not in config["model"]["model_name"]
+        else MODELS[config["model"]["model_name"]](ResidualBlock, [2, 2, 2, 2])
+    )
     optimizer = OPTIMIZERS[config["training_params"]["optimizer"]](
         model.parameters(), lr=config["training_params"]["lr"]
     )
@@ -101,9 +120,7 @@ def main(args):
     df.to_csv(f"{path}/{model_name}_{seed}.csv")
 
     best_model = MODELS[config["model"]["model_name"]]
-    checkpoint = torch.load(
-        f"{path}/{checkpoint_name}"
-    )
+    checkpoint = torch.load(f"{path}/{checkpoint_name}")
     best_model.load_state_dict(checkpoint["model_state_dict"])
 
     test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test)

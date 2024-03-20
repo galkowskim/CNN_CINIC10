@@ -12,27 +12,15 @@ def get_data(
     data_path: str = ".",
     batch_size: int = 256,
     augmentation: bool = False,
-    pretrained_model_input_size: Tuple[int] = None,
 ) -> Tuple[
     torch.utils.data.DataLoader,
     torch.utils.data.DataLoader,
     torch.utils.data.DataLoader,
 ]:
 
-    if augmentation and pretrained_model_input_size:
+    if augmentation:
         # TODO: Not sure if we want all augmentations at once or if we want to be able to choose which ones to use + Resize to pretrained_model_input_size
         ...
-    elif augmentation:
-        # TODO: Not sure if we want all augmentations at once or if we want to be able to choose which ones to use
-        ...
-    elif pretrained_model_input_size:
-        transform = transforms.Compose(
-            [
-                transforms.Resize(pretrained_model_input_size),
-                transforms.ToTensor(),
-                transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
-            ]
-        )
     else:
         transform = transforms.Compose(
             [

@@ -46,10 +46,11 @@ def main(args):
     config = load_config(args.config)
 
     cinic_directory = "."
+    batch_size = config["training_params"]["batch_size"]
 
     cinic_train, cinic_valid, cinic_test = get_data(
         cinic_directory,
-        batch_size=256,
+        batch_size=batch_size,
         augmentation=config["data_params"]["augmentation"],
     )
 

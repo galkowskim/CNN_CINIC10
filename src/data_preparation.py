@@ -31,20 +31,30 @@ def get_data(
     torch.utils.data.DataLoader,
 ]:
 
-    transform_train = transforms.Compose([
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.ColorJitter(brightness=0.5, contrast=0.5),
-        AddGaussianNoise(mean=0, std=0.005),
-        transforms.RandomAffine(degrees=5, translate=(0.1, 0.1)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
-    ]) if augmentation else transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
-    ])
+    transform_train = (
+        transforms.Compose(
+            [
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.ColorJitter(brightness=0.5, contrast=0.5),
+                AddGaussianNoise(mean=0, std=0.005),
+                transforms.RandomAffine(degrees=5, translate=(0.1, 0.1)),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
+            ]
+        )
+        if augmentation
+        else transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
+            ]
+        )
+    )
 
     cinic_train = torch.utils.data.DataLoader(
-        torchvision.datasets.ImageFolder(data_path + "/train", transform=transform_train),
+        torchvision.datasets.ImageFolder(
+            data_path + "/train", transform=transform_train
+        ),
         batch_size=batch_size,
         shuffle=True,
         num_workers=4,
@@ -59,14 +69,18 @@ def get_data(
     )
 
     cinic_valid = torch.utils.data.DataLoader(
-        torchvision.datasets.ImageFolder(data_path + "/valid", transform=valid_and_test_transform),
+        torchvision.datasets.ImageFolder(
+            data_path + "/valid", transform=valid_and_test_transform
+        ),
         batch_size=batch_size,
         shuffle=False,
         num_workers=4,
         pin_memory=True,
     )
     cinic_test = torch.utils.data.DataLoader(
-        torchvision.datasets.ImageFolder(data_path + "/test", transform=valid_and_test_transform),
+        torchvision.datasets.ImageFolder(
+            data_path + "/test", transform=valid_and_test_transform
+        ),
         batch_size=batch_size,
         shuffle=False,
         num_workers=4,

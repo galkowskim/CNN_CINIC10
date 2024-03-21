@@ -36,15 +36,23 @@ def get_data(
         num_workers=4,
         pin_memory=True,
     )
+
+    valid_and_test_transform = transforms.Compose(
+        [
+            transforms.ToTensor(),
+            transforms.Normalize(mean=CINIC_MEAN, std=CINIC_STD),
+        ]
+    )
+
     cinic_valid = torch.utils.data.DataLoader(
-        torchvision.datasets.ImageFolder(data_path + "/valid", transform=transform),
+        torchvision.datasets.ImageFolder(data_path + "/valid", transform=valid_and_test_transform),
         batch_size=batch_size,
         shuffle=False,
         num_workers=4,
         pin_memory=True,
     )
     cinic_test = torch.utils.data.DataLoader(
-        torchvision.datasets.ImageFolder(data_path + "/test", transform=transform),
+        torchvision.datasets.ImageFolder(data_path + "/test", transform=valid_and_test_transform),
         batch_size=batch_size,
         shuffle=False,
         num_workers=4,

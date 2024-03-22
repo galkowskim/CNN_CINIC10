@@ -221,11 +221,6 @@ class PretrainedResNet(nn.Module):
         super().__init__()
         # Load pre-trained ResNet model and freeze its weights
         resnet = torchvision.models.resnet18(weights="DEFAULT")
-        for name, param in resnet.named_parameters():
-            if (
-                "fc" not in name
-            ):  # Unfreeze all layers except the last layer (fully connected layer)
-                param.requires_grad = False
 
         # Modify the last layer for CIFAR-10 (10 classes)
         num_ftrs = resnet.fc.in_features
@@ -245,9 +240,7 @@ class PretrainedVGG16(nn.Module):
         super().__init__()
         # Load pre-trained VGG16 model and freeze its weights
         vgg16 = torchvision.models.vgg16(weights="DEFAULT")
-        for name, param in vgg16.named_parameters():
-            if "classifier.6" not in name:
-                param.requires_grad = False
+
         num_ftrs = vgg16.classifier[6].in_features
         vgg16.classifier[6] = nn.Linear(num_ftrs, 10)
         self.network = vgg16
@@ -265,9 +258,7 @@ class PretrainedAlexNet(nn.Module):
         super().__init__()
         # Load pre-trained AlexNet model and freeze its weights
         alexnet = torchvision.models.alexnet(weights="DEFAULT")
-        for name, param in alexnet.named_parameters():
-            if "classifier.6" not in name:
-                param.requires_grad = False
+
         num_ftrs = alexnet.classifier[6].in_features
         alexnet.classifier[6] = nn.Linear(num_ftrs, 10)
         self.network = alexnet

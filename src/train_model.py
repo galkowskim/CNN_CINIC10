@@ -11,6 +11,8 @@ from models import (
     CustomCNN,
     LeNet5BasedModelFor32x32Images,
     PretrainedResNet,
+    PretrainedVGG16,
+    PretrainedAlexNet,
     ResidualBlock,
     ResNetBasedModelFor32x32Images,
     VGG16BasedModelFor32x32Images,
@@ -25,6 +27,8 @@ MODELS = {
     "ResNetBasedModelFor32x32Images": ResNetBasedModelFor32x32Images,
     # pretrained models
     "PretrainedResNet": PretrainedResNet,
+    "PretrainedVGG16": PretrainedVGG16,
+    "PretrainedAlexNet": PretrainedAlexNet,
 }
 
 OPTIMIZERS = {

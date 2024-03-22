@@ -2,7 +2,7 @@ import json
 
 import matplotlib.pyplot as plt
 import torch
-
+from utils import save_confusion_matrix
 
 def train_epoch(device, model, criterion, optimizer, train_loader):
     model.train()
@@ -28,11 +28,12 @@ def train_epoch(device, model, criterion, optimizer, train_loader):
     return epoch_loss, epoch_accuracy
 
 
-def evaluate_model(device, model, criterion, test_loader):
+def evaluate_model(device, model, criterion, test_loader, save_cm=False, cm_path=None):
     model.eval()
     running_loss = 0.0
     running_accuracy = 0.0
-
+    predictions = []
+    true_labels = []
     with torch.no_grad():
         for inputs, labels in test_loader:
             inputs, labels = inputs.to(device, non_blocking=True), labels.to(
@@ -41,8 +42,18 @@ def evaluate_model(device, model, criterion, test_loader):
             outputs = model(inputs)
             loss = criterion(outputs, labels)
 
+            predictions.append(outputs)
+            true_labels.append(labels)
             running_loss += loss.item() * inputs.size(0)
             running_accuracy += calculate_accuracy(outputs, labels) * inputs.size(0)
+
+    if save_cm:
+        predictions = torch.cat(predictions)
+        true_labels = torch.cat(true_labels)
+        predictions = torch.argmax(predictions, dim=1)
+        true_labels = true_labels.cpu().numpy()
+        predictions = predictions.cpu().numpy()
+        save_confusion_matrix(true_labels, predictions, cm_path)
 
     test_loss = running_loss / len(test_loader.dataset)
     test_accuracy = running_accuracy / len(test_loader.dataset)

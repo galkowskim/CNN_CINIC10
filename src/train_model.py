@@ -10,9 +10,9 @@ from data_preparation import get_data
 from models import (
     CustomCNN,
     LeNet5BasedModelFor32x32Images,
+    PretrainedAlexNet,
     PretrainedResNet,
     PretrainedVGG16,
-    PretrainedAlexNet,
     ResidualBlock,
     ResNetBasedModelFor32x32Images,
     VGG16BasedModelFor32x32Images,
@@ -151,7 +151,7 @@ def main(args):
     best_model.load_state_dict(checkpoint["model_state_dict"])
     best_model.to(device)
 
-    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test)
+    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test, True, f"{path}/confusion_matrix.png")
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
     with open(f"{path}/test_results.txt", "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")

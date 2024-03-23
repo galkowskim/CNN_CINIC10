@@ -28,11 +28,11 @@ MODELS = {
     "LeNet5BasedModelFor32x32Images": LeNet5BasedModelFor32x32Images,
     "VGG16BasedModelFor32x32Images": VGG16BasedModelFor32x32Images,
     "ResNetBasedModelFor32x32Images": ResNetBasedModelFor32x32Images,
+    "WideModel": WideModel,
     # pretrained models
     "PretrainedResNet": PretrainedResNet,
     "PretrainedVGG16": PretrainedVGG16,
     "PretrainedAlexNet": PretrainedAlexNet,
-    "WideModel": WideModel,
 }
 
 OPTIMIZERS = {

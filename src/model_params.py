@@ -7,6 +7,7 @@ from models import (
     PretrainedResNet,
     PretrainedVGG16,
     ResidualBlock,
+    WideModel,
     ResNetBasedModelFor32x32Images,
     VGG16BasedModelFor32x32Images,
 )
@@ -17,6 +18,7 @@ for i, model in enumerate(
         LeNet5BasedModelFor32x32Images,
         ResNetBasedModelFor32x32Images,
         VGG16BasedModelFor32x32Images,
+        WideModel,
         PretrainedAlexNet,
         PretrainedResNet,
         PretrainedVGG16,
@@ -25,7 +27,7 @@ for i, model in enumerate(
     if i == 0:
         print("-----------------------------------------")
         print("Custom models - own implementations")
-    if i == 4:
+    if i == 5:
         print("-----------------------------------------")
         print("Pretrained models - torchvision.models")
     model = (

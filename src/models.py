@@ -1,5 +1,7 @@
 import torch.nn as nn
 import torchvision
+import torch
+import torch.nn.functional as F
 
 
 # OUR MODELS
@@ -49,10 +51,10 @@ class LeNet5BasedModelFor32x32Images(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
-        self.fc = nn.Linear(16 * 8 * 8, 120)
+        self.fc = nn.Linear(16 * 6 * 6, 256)
         self.relu = nn.ReLU()
-        self.fc1 = nn.Linear(120, 84)
-        self.fc2 = nn.Linear(84, 10)
+        self.fc1 = nn.Linear(256, 64)
+        self.fc2 = nn.Linear(64, 10)
 
     def forward(self, x):
         out = self.layer1(x)
@@ -212,10 +214,24 @@ class ResNetBasedModelFor32x32Images(nn.Module):  # this model requires 224x224 
 
         return x
 
+class WideModel(nn.Module):
+    def __init__(self):
+        super(WideModel, self).__init__()
+        self.branch1 = LeNet5BasedModelFor32x32Images()
+        self.branch2 = VGG16BasedModelFor32x32Images()
+
+        self.fc1 = nn.Linear(20, 10)  # Assuming the concatenated output size is 20
+
+    def forward(self, x):
+        out1 = self.branch1(x)
+        out2 = self.branch2(x)
+
+        concatenated = torch.cat((out1, out2), dim=1)
+        output = F.relu(self.fc1(concatenated))
+        return output
+
 
 # MODELS BASED ON PRETRAINED MODELS
-
-
 class PretrainedResNet(nn.Module):
     def __init__(self):
         super().__init__()

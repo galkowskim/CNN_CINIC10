@@ -3,13 +3,16 @@ import os
 from argparse import ArgumentParser
 
 import pandas as pd
+import numpy as np
 import torch
+import random
 from tqdm import tqdm
 
 from data_preparation import get_data
 from models import (
     CustomCNN,
     LeNet5BasedModelFor32x32Images,
+    WideModel,
     PretrainedAlexNet,
     PretrainedResNet,
     PretrainedVGG16,
@@ -29,6 +32,7 @@ MODELS = {
     "PretrainedResNet": PretrainedResNet,
     "PretrainedVGG16": PretrainedVGG16,
     "PretrainedAlexNet": PretrainedAlexNet,
+    "WideModel": WideModel,
 }
 
 OPTIMIZERS = {
@@ -84,6 +88,11 @@ def main(args):
 
     model_name = config["model"]["model_name"]
     seed = config["model"]["seed"]
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
     path = f"{args.checkpoints}/{model_name}_seed_{seed}_augmentation_{config['data_params']['augmentation']}"
     os.makedirs(path, exist_ok=True)
@@ -151,7 +160,7 @@ def main(args):
     best_model.load_state_dict(checkpoint["model_state_dict"])
     best_model.to(device)
 
-    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test, True, f"{path}/confusion_matrix.png")
+    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test, save_cm=True, cm_path=f"{path}/confusion_matrix.png")
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
     with open(f"{path}/test_results.txt", "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")

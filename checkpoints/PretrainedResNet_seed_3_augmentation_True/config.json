@@ -1,0 +1,1 @@
+{"data_params": {"augmentation": true}, "model": {"seed": 3, "model_name": "PretrainedResNet"}, "training_params": {"optimizer": "sgd", "lr": 0.001, "no_epochs": 20, "batch_size": 256, "lr_scheduler": "CosineAnnealingLR"}, "lr_scheduler_params": {"T_max": 20, "eta_min": 0}, "early_stopping_params": {"patience": 5, "min_delta": 0.001}}

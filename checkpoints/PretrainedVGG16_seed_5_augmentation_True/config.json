@@ -1,0 +1,1 @@
+{"data_params": {"augmentation": true}, "model": {"seed": 5, "model_name": "PretrainedVGG16"}, "training_params": {"optimizer": "sgd", "lr": 0.001, "no_epochs": 15, "batch_size": 256, "lr_scheduler": "CosineAnnealingLR"}, "lr_scheduler_params": {"T_max": 15, "eta_min": 0}, "early_stopping_params": {"patience": 5, "min_delta": 0.001}}

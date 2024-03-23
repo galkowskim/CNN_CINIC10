@@ -104,10 +104,10 @@ def main(args):
     df = pd.DataFrame(columns=columns)
 
     # Early stopping variables
-    patience = config["early_stopping_params"]["patience"]
+    # patience = config["early_stopping_params"]["patience"]
     min_delta = config["early_stopping_params"]["min_delta"]
     best_val_loss = float("inf")
-    counter = 0
+    # counter = 0
 
     num_epochs = config["training_params"]["no_epochs"]
 
@@ -134,7 +134,7 @@ def main(args):
                 },
                 os.path.join(path, checkpoint_name),
             )
-            counter = 0
+            # counter = 0
         # elif val_loss >= best_val_loss - min_delta:  # Early stopping
         #     counter += 1
         #     if counter >= patience:

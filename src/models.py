@@ -135,7 +135,7 @@ class VGG16BasedModelFor32x32Images(nn.Module):
         return out
 
 
-### Blocks for Resnet model
+# Blocks for Resnet model
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, stride=1, downsample=None):
         super(ResidualBlock, self).__init__()

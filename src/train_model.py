@@ -1,24 +1,24 @@
 import json
 import os
+import random
 from argparse import ArgumentParser
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import torch
-import random
 from tqdm import tqdm
 
 from data_preparation import get_data
 from models import (
     CustomCNN,
     LeNet5BasedModelFor32x32Images,
-    WideModel,
     PretrainedAlexNet,
     PretrainedResNet,
     PretrainedVGG16,
     ResidualBlock,
     ResNetBasedModelFor32x32Images,
     VGG16BasedModelFor32x32Images,
+    WideModel,
 )
 from train_eval_utils import evaluate_model, load_config, plot_loss_and_acc, train_epoch
 
@@ -160,7 +160,14 @@ def main(args):
     best_model.load_state_dict(checkpoint["model_state_dict"])
     best_model.to(device)
 
-    test_loss, test_accuracy = evaluate_model(device, best_model, criterion, cinic_test, save_cm=True, cm_path=f"{path}/confusion_matrix.png")
+    test_loss, test_accuracy = evaluate_model(
+        device,
+        best_model,
+        criterion,
+        cinic_test,
+        save_cm=True,
+        cm_path=f"{path}/confusion_matrix.png",
+    )
     print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
     with open(f"{path}/test_results.txt", "w") as f:
         f.write(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")

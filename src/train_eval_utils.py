@@ -2,7 +2,9 @@ import json
 
 import matplotlib.pyplot as plt
 import torch
+
 from utils import save_confusion_matrix
+
 
 def train_epoch(device, model, criterion, optimizer, train_loader):
     model.train()

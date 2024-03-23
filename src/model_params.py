@@ -7,9 +7,9 @@ from models import (
     PretrainedResNet,
     PretrainedVGG16,
     ResidualBlock,
-    WideModel,
     ResNetBasedModelFor32x32Images,
     VGG16BasedModelFor32x32Images,
+    WideModel,
 )
 
 for i, model in enumerate(

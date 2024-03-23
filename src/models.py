@@ -1,7 +1,7 @@
-import torch.nn as nn
-import torchvision
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
+import torchvision
 
 
 # OUR MODELS
@@ -213,6 +213,7 @@ class ResNetBasedModelFor32x32Images(nn.Module):  # this model requires 224x224 
         x = self.fc(x)
 
         return x
+
 
 class WideModel(nn.Module):
     def __init__(self):

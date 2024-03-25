@@ -8,9 +8,17 @@ This project was conducted as part of the "Deep Learning" course at the Warsaw U
 
 # Training
 
-Go into the `src` directory.
+1. Download dataset and unzip it in the `data` folder.
 
-Modify `config.json` to your needs and run `python train_model.py` to train the model (look into the argparse options for path details).
+2. Create environment using conda:
+
+```bash
+conda env create -f environment.yml
+```
+
+3. Go into the `src` directory.
+
+4. Modify `config.json` to your needs and run `python train_model.py` to train the model (look into the argparse options for path details).
 
 ```python
 python train_model.py --config <path_to_config_file> --checkpoints <path_to_save_checkpoints>

@@ -45,6 +45,7 @@ SCHEDULERS = {
     "CosineAnnealingLR": torch.optim.lr_scheduler.CosineAnnealingLR,
 }
 
+DATA_PATH = '../data'
 
 def main(args):
     torch.cuda.empty_cache()
@@ -53,7 +54,7 @@ def main(args):
 
     config = load_config(args.config)
 
-    cinic_directory = "."
+    cinic_directory = DATA_PATH
     batch_size = config["training_params"]["batch_size"]
 
     cinic_train, cinic_valid, cinic_test = get_data(

@@ -14,6 +14,7 @@ This project was conducted as part of the "Deep Learning" course at the Warsaw U
 
 ```bash
 conda env create -f environment.yml
+conda activate torch_gpu
 ```
 
 3. Go into the `src` directory.

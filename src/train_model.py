@@ -45,7 +45,8 @@ SCHEDULERS = {
     "CosineAnnealingLR": torch.optim.lr_scheduler.CosineAnnealingLR,
 }
 
-DATA_PATH = '../data'
+DATA_PATH = "../data"
+
 
 def main(args):
     torch.cuda.empty_cache()

@@ -47,7 +47,7 @@ optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 You can find the results of our experiments in the "results" folder, where we have aggregated the outcomes of multiple runs conducted with different seeds. Additionally, the "checkpoints" folder contains the checkpoints from our experiments. To reproduce our results, you can utilize the provided configuration file available in the same directory.
 
 
-| Model Name                        | Epochs | Aug. | lr    | Avg. accuracy          |
+| Model Name                        | Epochs | Aug. | Learning rate    | Avg. accuracy          |
 |-----------------------------------|--------|------|-------|------------------------|
 | CustomCNN                         | 30     |  -   | 0.01  | 0.6482 ± 0.0045        |
 | CustomCNN                         | 30     |  ✓   | 0.01  | 0.6897 ± 0.0044        |
